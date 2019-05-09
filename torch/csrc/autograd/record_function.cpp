@@ -8,6 +8,9 @@ std::vector<RecordFunctionCallback> start_callbacks;
 std::vector<RecordFunctionCallback> end_callbacks;
 size_t callback_needs_inputs = 0;
 thread_local RecordFunction* thread_local_func_ = nullptr;
+
+bool is_sampled_callbacks = false;
+double sampling_prob = 1.0;
 }
 
 void pushCallback(
@@ -38,6 +41,22 @@ bool hasCallbacks() {
 
 bool needsInputs() {
   return callback_needs_inputs > 0;
+}
+
+bool isSampledCallbacks() {
+  return is_sampled_callbacks;
+}
+
+void setSampledCallbacks(bool is_sampled) {
+  is_sampled_callbacks = is_sampled;
+}
+
+double getSamplingProbability() {
+  return sampling_prob;
+}
+
+void setSamplingProbability(double prob) {
+  sampling_prob = prob;
 }
 
 void RecordFunction::before(const char* name, int64_t sequence_nr) {
